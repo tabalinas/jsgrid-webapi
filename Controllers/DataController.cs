@@ -10,13 +10,16 @@ namespace JSGridWebAPISample.Controllers {
     public class DataController: ApiController {
 
         // GET api/values
-        public IEnumerable<string> Get() {
-            return new string[] { "value1", "value2" };
+        public IEnumerable<object> Get() {
+            return new[] { 
+                new { Name = "value1" }, 
+                new { Name = "value2" }
+            };
         }
 
         // GET api/values/5
-        public string Get(int id) {
-            return "value";
+        public object Get(int id) {
+            return new { Name = "value1" };
         }
 
         // POST api/values

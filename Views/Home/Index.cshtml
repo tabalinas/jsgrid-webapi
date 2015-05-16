@@ -1,1 +1,74 @@
-﻿<div id="jsGrid"></div>
+﻿@section head {
+<link href="http://js-grid.com/css/jsgrid.min.css" rel="stylesheet" />
+<link href="http://js-grid.com/css/jsgrid-theme.min.css" rel="stylesheet" />
+}
+
+<div id="jsGrid"></div>
+
+@section scripts {
+<script src="http://js-grid.com/js/jsgrid.min.js"></script>
+<script>
+    $(function() {
+
+        $("#jsGrid").jsGrid({
+            height: "80%",
+            width: "100%",
+
+            filtering: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageSize: 15,
+            pageButtonCount: 5,
+
+            deleteConfirm: "Do you really want to delete item?",
+
+            controller: {
+                loadData: function(filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/api/data",
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+
+                insertItem: function(item) {
+                    return $.ajax({
+                        type: "POST",
+                        url: "/api/data",
+                        data: item,
+                        dataType: "json"
+                    });
+                },
+
+                updateItem: function(item) {
+                    return $.ajax({
+                        type: "PUT",
+                        url: "/api/data",
+                        data: item,
+                        dataType: "json"
+                    });
+                },
+
+                deleteItem: function(item) {
+                    return $.ajax({
+                        type: "DELETE",
+                        url: "/api/data",
+                        data: item,
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "Name", type: "text", width: 150 },
+                { type: "control" }
+            ]
+        });
+
+    });
+</script>
+}
