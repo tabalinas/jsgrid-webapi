@@ -10,8 +10,19 @@
 <script>
     $(function() {
 
+        var countries = [
+            { Name: "", Id: 0 },
+            { Name: "United States", Id: 1 },
+            { Name: "Canada", Id: 2 },
+            { Name: "United Kingdom", Id: 3 },
+            { Name: "France", Id: 4 },
+            { Name: "Brazil", Id: 5 },
+            { Name: "China", Id: 6 },
+            { Name: "Russia", Id: 7 }
+        ];
+
         $("#jsGrid").jsGrid({
-            height: "80%",
+            height: "50%",
             width: "100%",
 
             filtering: true,
@@ -20,10 +31,10 @@
             paging: true,
             autoload: true,
 
-            pageSize: 15,
+            pageSize: 10,
             pageButtonCount: 5,
 
-            deleteConfirm: "Do you really want to delete item?",
+            deleteConfirm: "Do you really want to delete client?",
 
             controller: {
                 loadData: function(filter) {
@@ -65,6 +76,10 @@
 
             fields: [
                 { name: "Name", type: "text", width: 150 },
+                { name: "Age", type: "number", width: 50, filtering: false },
+                { name: "Address", type: "text", width: 200 },
+                { name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name" },
+                { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
                 { type: "control" }
             ]
         });
