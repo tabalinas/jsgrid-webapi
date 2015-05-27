@@ -13,12 +13,16 @@ namespace JSGridWebAPISample.Controllers {
 
     public class DataController: ApiController {
 
-        public IEnumerable<object> Get() {
-            DataContext db = new DataContext();
+        DataContext _db = new DataContext();
 
+        DataContext DB {
+            get { return _db; }
+        }
+
+        public IEnumerable<object> Get() {
             ClientFilter filter = GetFilter();
 
-            var result = db.Client.Where(c =>
+            var result = DB.Client.Where(c =>
                 (String.IsNullOrEmpty(filter.Name) || c.Name.Contains(filter.Name)) &&
                 (String.IsNullOrEmpty(filter.Address) || c.Address.Contains(filter.Address)) &&
                 (!filter.Married.HasValue || c.Married == filter.Married) &&
@@ -39,22 +43,43 @@ namespace JSGridWebAPISample.Controllers {
             };
         }
 
-        // GET api/values/5
-        public object Get(int id) {
-            DataContext db = new DataContext();
-            return db.Client.FirstOrDefault(c => c.ID == id);
+        public void Post([FromBody]Client client) {
+            DB.Client.Add(client);
+            DB.SaveChanges();
         }
 
-        // POST api/values
-        public void Post([FromBody]string value) {
+
+        public void Put(int id, [FromBody]Client editedClient) {
+            Client client = DB.Client.Find(id);
+
+            if(client == null)
+                return;
+
+            client.Name = editedClient.Name;
+            client.Age = editedClient.Age;
+            client.Country = editedClient.Country;
+            client.Address = editedClient.Address;
+            client.Married = editedClient.Married;
+
+            DB.Entry(client).State = System.Data.Entity.EntityState.Modified;
+            DB.SaveChanges();
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value) {
-        }
-
-        // DELETE api/values/5
         public void Delete(int id) {
+            Client client = DB.Client.Find(id);
+
+            if(client == null)
+                return;
+
+            DB.Client.Remove(client);
+            DB.SaveChanges();
+        }
+
+        protected override void Dispose(bool disposing) {
+            if(disposing) {
+                DB.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
     }

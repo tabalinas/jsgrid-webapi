@@ -26,6 +26,7 @@
             width: "100%",
 
             filtering: true,
+            inserting: true,
             editing: true,
             sorting: true,
             paging: true,
@@ -58,7 +59,7 @@
                 updateItem: function(item) {
                     return $.ajax({
                         type: "PUT",
-                        url: "/api/data",
+                        url: "/api/data/" + item.ID,
                         data: item,
                         dataType: "json"
                     });
@@ -67,8 +68,7 @@
                 deleteItem: function(item) {
                     return $.ajax({
                         type: "DELETE",
-                        url: "/api/data",
-                        data: item,
+                        url: "/api/data/" + item.ID,
                         dataType: "json"
                     });
                 }
