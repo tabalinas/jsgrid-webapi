@@ -10,6 +10,14 @@ namespace JSGridWebAPISample.DAL {
 
     public class DataContext: DbContext {
 
+        /// <summary>
+        /// It is always recommended to EXPLICITLY define the name of connectionstring as not defining connectionstring gives issues in VS 2015 and above
+        /// </summary>
+        public DataContext() : base("name=DefaultConnection")
+        {
+
+        }
+
         public DbSet<Client> Client { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
